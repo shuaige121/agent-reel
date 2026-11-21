@@ -1,0 +1,20 @@
+#!/bin/bash
+# reel launcher (bash 3.2 compatible). Put this directory on PATH; works when called through a symlink.
+# Interpreter: $REEL_PYTHON if set, else ~/.local/share/reel/venv/bin/python if executable, else python3.
+# Arguments, exit code, stdout and stderr pass through unchanged.
+src="${BASH_SOURCE[0]}"
+while [ -h "$src" ]; do
+  dir="$(cd -P "$(dirname "$src")" >/dev/null 2>&1 && pwd)"
+  src="$(readlink "$src")"
+  case "$src" in /*) ;; *) src="$dir/$src" ;; esac
+done
+ROOT="$(cd -P "$(dirname "$src")/.." >/dev/null 2>&1 && pwd)" || { echo "reel: cannot locate the engine root" >&2; exit 127; }
+
+if [ -n "${REEL_PYTHON:-}" ]; then
+  PY="$REEL_PYTHON"
+elif [ -x "${HOME:-}/.local/share/reel/venv/bin/python" ]; then
+  PY="$HOME/.local/share/reel/venv/bin/python"
+else
+  PY=python3
+fi
+exec "$PY" "$ROOT/reel.py" "$@"

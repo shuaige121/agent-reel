@@ -1,0 +1,11 @@
+{
+ "name": "social-vertical",
+ "extends": "default",
+ "description": "竖屏社交平台短视频：1080×1920 30fps h264/aac 48k，-16±1 LUFS，真峰值 ≤ -1 dBTP，静止 >5 s 判 FAIL，开头 1.5 s 内要有声音，片尾 ≥2 s 无声和中间 ≥0.5 s 无声要人确认。静音版：项目 profile 写 \"extends\": \"social-vertical\", \"audio\": \"silent\"。",
+ "format": {"video_codec": ["h264"], "pix_fmt": ["yuv420p"], "audio_codec": ["aac"], "sample_rate": [48000],
+            "width": 1080, "height": 1920, "fps": 30},
+ "loudness": {"range": [-17.0, -15.0], "action": "fail"},
+ "true_peak": {"max_dbtp": -1.0, "action": "fail"},
+ "silence": {"noise_db": -40, "min_s": 0.5, "head_max_s": 1.5, "head_action": "fail",
+             "tail_max_s": 2.0, "tail_action": "needs_review", "mid_review_s": 0.5}
+}
